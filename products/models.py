@@ -19,6 +19,7 @@ class Product(models.Model):
     description = models.TextField(_("Description"))
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2)
     quantity = models.IntegerField(_("Quantity"))
+    image = models.ImageField(_("Image"), upload_to='products/', blank=True)
     flag = models.CharField(_("Flag"),
                             max_length=10,
                             choices=FLAG_OPTION,
