@@ -1,4 +1,5 @@
-Products:
+# Products:
+
     - name
     - sku
     - brand * [name-img]
@@ -12,7 +13,8 @@ Products:
     - reviews * [name-img-rating-date-comment]
     - category * [name-img]
 
-Orders:
+# Orders:
+
     - status [recieved-processing-shipped-delivered] dropdown
     - user
     - id
@@ -22,14 +24,16 @@ Orders:
     - total
     - sub_total
 
-OrderDetails:
+# OrderDetails:
+
     - order_id
     - product_id
     - quantity
     - price
     - total
 
-User:
+# User:
+
     - name
     - email
     - password
