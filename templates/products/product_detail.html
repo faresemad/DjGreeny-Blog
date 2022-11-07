@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/product-details.css' %}">
+{% endblock css %}
 {% block body %}
         <!--=====================================
                     BANNER PART START
@@ -32,18 +35,14 @@
                                 <label class="details-label off">-10%</label>
                             </div>
                             <ul class="details-preview"> 
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
+                                {% for image in object.images_products.all %}
+                                    <li><img src="{{image.image.url}}" alt="product"></li>
+                                {% endfor %}
                             </ul>
                             <ul class="details-thumb">
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
-                                <li><img src="{% static 'images/product/01.jpg' %}" alt="product"></li>
+                                {% for image in object.images_products.all %}
+                                    <li><img src="{{image.image.url}}" alt="product"></li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>

@@ -25,15 +25,15 @@ class Product(models.Model):
                             choices=FLAG_OPTION,
                             default='new')
     brand = models.ForeignKey('Brand',
-                              on_delete=models.SET_NULL,
-                              null=True,
-                              blank=True,
-                              related_name='product_brand')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='product_brand')
     category = models.ForeignKey('Category',
-                                 on_delete=models.SET_NULL,
-                                 null=True,
-                                 blank=True,
-                                 related_name='product_category')
+                                on_delete=models.SET_NULL,
+                                null=True,
+                                blank=True,
+                                related_name='product_category')
     tags = TaggableManager()
 
     class Meta:
@@ -48,9 +48,7 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product,
-                                on_delete=models.CASCADE,
-                                related_name='images_products')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='images_products')
     image = models.ImageField(_("Image"), upload_to="products/%y/%m/%d/")
 
     def __str__(self):
@@ -61,7 +59,11 @@ class Brand(models.Model):
     # [name-image]
     name = models.CharField(_("Name"), max_length=100)
     image = models.ImageField(_("Image"), upload_to="brands/%y/%m/%d/")
-
+    category = models.ForeignKey('Category',
+                                    on_delete=models.SET_NULL,
+                                    null=True,
+                                    blank=True,
+                                    related_name='brand_category')
     def __str__(self):
         return self.name
 
