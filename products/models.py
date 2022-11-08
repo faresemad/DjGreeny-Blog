@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from taggit.managers import TaggableManager
 
@@ -19,7 +20,9 @@ class Product(models.Model):
     description = models.TextField(_("Description"))
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2)
     quantity = models.IntegerField(_("Quantity"))
-    image = models.ImageField(_("Image"), upload_to='products/', blank=True)
+    image = models.ImageField(_("Image"),
+                            upload_to='products/%y/%m/',
+                            blank=True)
     flag = models.CharField(_("Flag"),
                             max_length=10,
                             choices=FLAG_OPTION,
@@ -34,7 +37,8 @@ class Product(models.Model):
                                 null=True,
                                 blank=True,
                                 related_name='product_category')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
+    slug = models.SlugField(_("Slug"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Product")
@@ -46,10 +50,16 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
+
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='images_products')
-    image = models.ImageField(_("Image"), upload_to="products/%y/%m/%d/")
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE,
+                                related_name='images_products')
+    image = models.ImageField(_("Image"), upload_to="products/%y/%m/")
 
     def __str__(self):
         return str(self.product)
@@ -58,12 +68,13 @@ class ProductImage(models.Model):
 class Brand(models.Model):
     # [name-image]
     name = models.CharField(_("Name"), max_length=100)
-    image = models.ImageField(_("Image"), upload_to="brands/%y/%m/%d/")
+    image = models.ImageField(_("Image"), upload_to="brands/%y/%m/")
     category = models.ForeignKey('Category',
-                                    on_delete=models.SET_NULL,
-                                    null=True,
-                                    blank=True,
-                                    related_name='brand_category')
+                                on_delete=models.SET_NULL,
+                                null=True,
+                                blank=True,
+                                related_name='brand_category')
+
     def __str__(self):
         return self.name
 
@@ -71,7 +82,7 @@ class Brand(models.Model):
 class Category(models.Model):
     # [name-image]
     name = models.CharField(_("Name"), max_length=100)
-    image = models.ImageField(_("Image"), upload_to="categories/%y/%m/%d/")
+    image = models.ImageField(_("Image"), upload_to="categories/%y/%m/")
 
     def __str__(self):
         return self.name
