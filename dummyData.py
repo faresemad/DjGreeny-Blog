@@ -74,4 +74,4 @@ def seedProduct(n):
 
 # seedCategory(10)
 # seedBrand(10)
-# seedProduct(20)
+seedProduct(20)

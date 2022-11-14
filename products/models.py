@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.aggregates import Avg
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from taggit.managers import TaggableManager
@@ -28,10 +29,10 @@ class Product(models.Model):
                             choices=FLAG_OPTION,
                             default='new')
     brand = models.ForeignKey('Brand',
+                            related_name='product_brand',
                             on_delete=models.SET_NULL,
                             null=True,
-                            blank=True,
-                            related_name='product_brand')
+                            blank=True)
     category = models.ForeignKey('Category',
                                 on_delete=models.SET_NULL,
                                 null=True,
@@ -54,6 +55,10 @@ class Product(models.Model):
         self.slug = slugify(self.name)
         super(Product, self).save(*args, **kwargs)
 
+    def avg_review(self):
+        avg = self.reviews_products.aggregate(myavg=Avg('rating'))
+        return avg
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product,
@@ -70,10 +75,10 @@ class Brand(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     image = models.ImageField(_("Image"), upload_to="brands/%y/%m/")
     category = models.ForeignKey('Category',
-                                on_delete=models.SET_NULL,
-                                null=True,
-                                blank=True,
-                                related_name='brand_category')
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True,
+                                 related_name='brand_category')
 
     def __str__(self):
         return self.name
@@ -105,4 +110,4 @@ class ProductReview(models.Model):
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.product)
