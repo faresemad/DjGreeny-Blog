@@ -11,11 +11,11 @@ ORDER_STATUS = (("recieved", "Recieved"), ("processing", "Processing"),
 
 class Orders(models.Model):
     status = models.CharField(max_length=20,
-                              choices=ORDER_STATUS,
-                              default="recieved")
+                            choices=ORDER_STATUS,
+                            default="recieved")
     user = models.ForeignKey(User,
-                             related_name='user_order',
-                             on_delete=models.CASCADE)
+                            related_name='user_order',
+                            on_delete=models.CASCADE)
     code = models.CharField(max_length=6, unique=True, default=generate_code)
     orderTime = models.DateTimeField(auto_now_add=True)
     deliveryTime = models.DateTimeField(null=True, blank=True)
