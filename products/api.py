@@ -42,3 +42,8 @@ class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
 class CategoryListApi(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class CategoryDetailApi(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
