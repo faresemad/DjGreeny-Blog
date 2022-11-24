@@ -17,14 +17,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('products.urls', namespace='home')),
     path('products/', include('products.urls', namespace='products')),
     path('__debug__/', include('debug_toolbar.urls')),
     # path('accounts/', include('accounts.urls', namespace='accounts')),
     # path('brands/', include('brands.urls', namespace='brands')),
     # path('settings/', include('settings.urls', namespace='settings')),
+    path('api/token/', TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('api/token/refresh/',
+         TokenRefreshView.as_view(),
+         name='token_refresh'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

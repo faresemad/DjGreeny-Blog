@@ -1,7 +1,11 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Brand, Category, Product
-from .serializers import BrandSerializer, CategorySerializer, ProductSerializer
+from .serializers import (BrandDetailSerializer, BrandSerializer,
+                          CategoryDetailSerializer, CategorySerializer,
+                          ProductSerializer)
 
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -19,31 +23,65 @@ from .serializers import BrandSerializer, CategorySerializer, ProductSerializer
 #     return Response(serializer.data)
 
 
-class ProductListApi(generics.ListCreateAPIView):
+# class ProductListApi(generics.ListAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     filter_backends = [SearchFilter]
+#     search_fields = ['name', 'price']
+#     permission_classes = [IsAuthenticated]
+
+
+# class ProductDetailApi(generics.RetrieveAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     permission_classes = [IsAuthenticated]
+
+
+# class BrandListApi(generics.ListAPIView):
+#     queryset = Brand.objects.all()
+#     serializer_class = BrandSerializer
+#     filter_backends = [SearchFilter]
+#     search_fields = ['name']
+#     permission_classes = [IsAuthenticated]
+
+# class BrandDetailApi(generics.RetrieveAPIView):
+#     queryset = Brand.objects.all()
+#     serializer_class = BrandDetailSerializer
+#     permission_classes = [IsAuthenticated]
+
+
+# class CategoryListApi(generics.ListAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#     filter_backends = [SearchFilter]
+#     search_fields = ['name']
+#     permission_classes = [IsAuthenticated]
+
+# class CategoryDetailApi(generics.RetrieveAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategoryDetailSerializer
+#     permission_classes = [IsAuthenticated]
+
+
+######### ViewSets #########
+
+class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name', 'price']
+    # permission_classes = [IsAuthenticated]
 
-
-class ProductDetailApi(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class BrandListApi(generics.ListCreateAPIView):
+class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+    # permission_classes = [IsAuthenticated]
 
-
-class BrandDetailApi(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
-
-
-class CategoryListApi(generics.ListCreateAPIView):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-
-class CategoryDetailApi(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+    # permission_classes = [IsAuthenticated]
